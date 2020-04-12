@@ -1,0 +1,132 @@
+Sintoma_CSV;Sintoma_Descricao
+comichao;Comichão
+erupcao_cutanea;Erupção cutânea
+erupcoes_cutaneas_nodais;Erupções cutâneas nodais
+espirros_continuos;Espirros contínuos
+calafrios;Calafrios
+arrepios;Arrepios
+dor_juntas;Dor nas juntas
+dor_estomago;Dor no estômago
+acidez;Acidez
+ulceras_lingua;Úlceras na língua
+desgaste_muscular;Desgaste muscular
+vomito;Vômito
+queimacao_urinar;Queimação ao urinar
+sangue_urina;Sangue na urina
+fadiga;Fadiga
+ganho_peso;Ganho de peso
+ansiedade;Ansiedade
+maos_pes_frios;Mãos e pés frios
+mudanca_humor;Mudança de humor
+perda_peso;Perda de peso
+inquietacao;Inquietação
+letargia;Letargia
+mancha_garganta;Manchas (brancas) na garganta
+nivel_acucar_irregular;Nível de açúcar irregular
+tosse;Tosse
+febre_alta;Febre alta
+olhos_fundos;Olhos fundos
+falta_de_ar;Falta de ar
+suor;Suor
+desidratacao;Desidratação
+indigestao;Indigestão
+dor_cabeca;Dor de cabeça
+pele_amarelada;Pele amarelada
+urina_escura;Urina escura
+nausea;Náusea
+perda_apetite;Perda de apetite
+dor_atras_olhos;Dor atrás dos olhos
+dor_costas;Dor nas costas
+constipacao;Constipação
+dor_abdominal;Dor abdominal
+diarreia;Diarreia
+febre_suave;Febre suave
+urina_amarela;Urina amarela
+amarelamento_olhos;Amarelamento dos olhos
+falencia_aguda_figado;Falência aguda do fígado
+inchaco_estomago;Inchaço no estômago
+linfonodos_aumentados;Linfonodos aumentados
+mal_estar;Mal estar
+visao_borrada_distorcida;Visão borrada e/ou distorcida
+catarro;Catarro
+irritacao_garganta;Irritação na garganta
+vermelhidao_olhos;Vermelhidão nos olhos
+sinusite;Sinusite
+nariz_escorrendo;Nariz escorrendo
+nariz_entupido;Nariz entupido
+dor_peito;Dor no peito
+fraqueza_membros;Fraqueza nos membros (superiores e/ou inferiores)
+taquicardia;Taquicardia
+dor_ao_evacuar;Dor ao evacuar
+dor_regiao_anal;Dor na região anal
+sangue_fezes;Sangue nas fezes
+irritacao_anus;Irritação no ânus
+dor_pescoco;Dor no pescoço
+tontura;Tontura
+colicas;Cólicas
+hematomas;Hematomas
+obesidade;Obesidade
+pernas_inchadas;Pernas inchadas
+vasos_sanguineos_inchados;Vasos sanguíneos inchados
+rosto_olhos_inchados;Rosto e/ou olhos inchados
+tireoide_alargada;Tireoide alargada
+unhas_frageis;Unhas frágeis
+extremidades_inchadas;Extremidades inchadas
+fome_excessiva;Fome excessiva
+contatos_extra_conjungais;Relações extraconjugais
+labios_secos_formigamento;Lábios secos e/ou com formigamento
+disartria;Disartria
+dor_joelhos;Dor nos joelhos
+dor_quadril;Dor nos quadris
+fraqueza_muscular;Fraqueza muscular
+pescoco_rigido;Pescoço rígido
+inchaco_juntas;Inchaço nas juntas
+rigidez_movimento;Rigidez no movimento
+movimento_girando;Sensação de estar tudo girando
+perda_equilibrio;Perda de equilíbrio
+instabilidade;Instabilidade
+fraqueza_um_lado_corpo;Fraqueza em um lado do corpo
+perda_olfato;Perda de olfato
+desconforto_bexiga;Desconforto na bexiga
+mau_cheiro_urina;Mau cheiro na urina
+vontade_urina_continua;Vontade contínua de urinar
+qtd_excessiva_gases;Quantidade excessiva de gases
+comichao_interno;Comichão interno
+tifo;Tifo
+depressao;Depressão
+irritabilidade;Irritabilidade
+dor_muscular;Dor muscular
+inabilidade_pensar_claramente_ou_concentrar;Incapacidade de pensar claramente e/ou se concentrar
+manchas_vermelhas_corpo;Manchas vermelhas pelo corpo
+dor_barriga;Dor de barriga
+menstruacao_anormal;Menstruação anormal
+discromias;Discromias
+olhos_lacrimejantes;Olhos lacrimejantes
+aumento_apetite;Aumento do apetite
+poliuria;Poliúria
+historico_familiar;Histórico familiar de sintomas parecidos
+escarro_mucos;Escarro com mucos
+escarro_avermelhado_marrom;Escarro avermelhado e marrom (cor de ferrugem)
+falta_concentracao;Falta de concentração
+perturbacoes_visuais;Perturbações visuais
+recebeu_transfusao_sangue;Recebeu transfusão de sangue recentemente
+recebeu_injecoes_nao_esterilizadas;Recebeu injeções não esterilizadas
+coma;Coma
+sangramento_estomacal;Sangramento estomacal
+estufamento_abdomen;Estufamento do abdômen
+historico_consumo_alcool;Histórico de alcoolismo
+hipervolemia;Hipervolemia
+sangue_no_escarro;Sangue no escarro
+veias_proeminentes_panturrilha;Veias proeminentes na panturrilha
+palpitacoes;Palpitações
+dor_caminhar;Dor ao caminhar
+espinhas_cheias_pus;Espinhas cheias de pus
+cravos;Cravos
+cicatrizes;Cicatrizes (de espinhas)
+descamacao_pele;Descamação da pele
+exposicao_poeira_prata;Exposição recente à poeira de prata
+pequenas_cavidades_unhas;Pequenas cavidades (buracos) nas unhas
+unhas_inflamadas;Unhas inflamadas
+bolhas;Bolhas
+vermelhidao_ao_redor_nariz;Vermelhidão ao redor do nariz
+casca_ferida_amarela;Casca de ferida amarela
