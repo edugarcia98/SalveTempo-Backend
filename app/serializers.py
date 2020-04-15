@@ -1,4 +1,6 @@
 from .models import *
+from account.models import *
+from account.serializers import *
 from rest_framework import serializers
 
 #Localização
@@ -95,6 +97,59 @@ class EspecializacaoDoencaSerializer(serializers.ModelSerializer):
         model = EspecializacaoDoenca
         fields = '__all__'
 
+#Usuários
+#==========================================================================================================
+
+class PacienteSerializer(serializers.ModelSerializer):
+
+    usuario = UserSerializer(read_only=True)
+
+    usuario_id = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all(), source='usuario', write_only=True
+    )
+
+    class Meta:
+        model = Paciente
+        depth = 1
+        fields = '__all__'
+
+class MedicoSerializer(serializers.ModelSerializer):
+
+    usuario = UserSerializer(read_only=True)
+
+    usuario_id = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all(), source='usuario', write_only=True
+    )
+
+    especializacao = EspecializacaoSerializer(read_only=True)
+
+    especializacao_id = serializers.PrimaryKeyRelatedField(
+        queryset=Especializacao.objects.all(), source='especializacao', write_only=True
+    )
+
+    class Meta:
+        model = Medico
+        depth = 1
+        fields = '__all__'
+
+class MedicoUnidadeSaudeSerializer(serializers.ModelSerializer):
+
+    medico = MedicoSerializer(read_only=True)
+
+    medico_id = serializers.PrimaryKeyRelatedField(
+        queryset=Medico.objects.all(), source='medico', write_only=True
+    )
+
+    unidadeSaude = UnidadeSaudeSerializer(read_only=True)
+
+    unidadeSaude_id = serializers.PrimaryKeyRelatedField(
+        queryset=UnidadeSaude.objects.all(), source='unidadeSaude', write_only=True
+    )
+
+    class Meta:
+        model = MedicoUnidadeSaude
+        depth = 1
+        fields = '__all__'
 
 #Consulta
 #==========================================================================================================
@@ -104,3 +159,7 @@ class SintomaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sintoma
         fields = '__all__'
+
+class TestSerializer(serializers.Serializer):
+    a = serializers.IntegerField()
+    b = serializers.IntegerField()

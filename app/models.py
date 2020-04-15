@@ -1,4 +1,5 @@
 from django.db import models
+from SalveTempo import settings
 
 # Create your models here.
 
@@ -141,13 +142,15 @@ class Usuario(models.Model):
     nome = models.CharField(max_length=50, verbose_name="Nome")
     sexo = models.CharField(max_length=1, choices=USUARIO_SEXO, verbose_name="Sexo")
     dataNasc = models.DateField(verbose_name="Data de Nascimento")
-    email = models.EmailField(verbose_name="E-mail")
-    senha = models.CharField(max_length=20, verbose_name="Senha")
+    #email = models.EmailField(verbose_name="E-mail")
+    #senha = models.CharField(max_length=20, verbose_name="Senha")
 
     class Meta:
         abstract = True
 
 class Paciente(Usuario):
+    usuario = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='paciente')
+
     def __str__(self):
         return self.nome
     
@@ -157,6 +160,7 @@ class Paciente(Usuario):
         verbose_name_plural = ("Pacientes")
 
 class Medico(Usuario):
+    usuario = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='medico')
     unidadesSaude = models.ManyToManyField(UnidadeSaude, verbose_name="Unidades de Saúde", through='MedicoUnidadeSaude')
     especializacao = models.ForeignKey(Especializacao, verbose_name="Especialização", on_delete=models.CASCADE)
 

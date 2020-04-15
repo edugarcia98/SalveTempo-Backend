@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.urlpatterns import format_suffix_patterns
 from app import views
+from account import views as accountviews
 
 urlpatterns = [
     path('app/', include('app.urls')),
@@ -39,6 +40,15 @@ urlpatterns = [
     path('especializacoes/<int:pk>/', views.EspecializacaoDetail.as_view()),
     path('especializacoes_doencas/', views.EspecializacaoDoencaList.as_view()),
     path('especializacoes_doencas/<int:pk>/', views.EspecializacaoDoencaDetail.as_view()),
+    path('users/', accountviews.UserList.as_view()),
+    path('users/<int:pk>/', accountviews.UserDetail.as_view()),
+    path('pacientes/', views.PacienteList.as_view()),
+    path('pacientes/<int:pk>/', views.PacienteDetail.as_view()),
+    path('medicos/', views.MedicoList.as_view()),
+    path('medicos/<int:pk>/', views.MedicoDetail.as_view()),
+    path('medicos_unidades_saude/', views.MedicoUnidadeSaudeList.as_view()),
+    path('medicos_unidades_saude/<int:pk>/', views.MedicoUnidadeSaudeDetail.as_view()),
+    path('test/', views.TestView.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

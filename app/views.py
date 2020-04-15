@@ -4,7 +4,7 @@ from django.http import HttpResponse, Http404
 from .models import *
 from .serializers import *
 
-from rest_framework import mixins, generics, status, filters
+from rest_framework import mixins, generics, status, filters, views
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -86,6 +86,33 @@ class EspecializacaoDoencaDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = EspecializacaoDoenca.objects.all()
     serializer_class = EspecializacaoDoencaSerializer
 
+#Usuários
+#==========================================================================================================
+
+class PacienteList(generics.ListCreateAPIView):
+    queryset = Paciente.objects.all()
+    serializer_class = PacienteSerializer
+
+class PacienteDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Paciente.objects.all()
+    serializer_class = PacienteSerializer
+
+class MedicoList(generics.ListCreateAPIView):
+    queryset = Medico.objects.all()
+    serializer_class = MedicoSerializer
+
+class MedicoDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Medico.objects.all()
+    serializer_class = MedicoSerializer
+
+class MedicoUnidadeSaudeList(generics.ListCreateAPIView):
+    queryset = MedicoUnidadeSaude.objects.all()
+    serializer_class = MedicoUnidadeSaudeSerializer
+
+class MedicoUnidadeSaudeDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = MedicoUnidadeSaude.objects.all()
+    serializer_class = MedicoUnidadeSaudeSerializer
+
 #Consulta
 #==========================================================================================================
 
@@ -96,3 +123,13 @@ class SintomaList(generics.ListCreateAPIView):
 class SintomaDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Sintoma.objects.all()
     serializer_class = SintomaSerializer
+
+class TestView(views.APIView):
+
+    def get(self, request):
+        data = []
+        for x in range(0, 100):
+            nums = {"a": x, "b": x}
+            data.append(nums)
+        results = TestSerializer(data, many=True).data
+        return Response(results)
