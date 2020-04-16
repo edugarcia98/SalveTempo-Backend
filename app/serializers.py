@@ -160,6 +160,6 @@ class SintomaSerializer(serializers.ModelSerializer):
         model = Sintoma
         fields = '__all__'
 
-class TestSerializer(serializers.Serializer):
-    a = serializers.IntegerField()
-    b = serializers.IntegerField()
+class ShowSintomaSerializer(serializers.Serializer):
+    nomecsv = serializers.CharField(max_length=100)
+    nome = serializers.CharField(max_length=150)

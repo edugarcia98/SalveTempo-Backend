@@ -1,0 +1,20 @@
+Ao se fazer o login, faz-se post na seguinte URL:
+
+http://127.0.0.1:8000/rest-auth/login/
+
+passando os seguintes dados por JSON:
+
+{
+    "username": "e-mail do usuário (definido anteriormente)",
+    "password": "senha do usuário"
+}
+
+Se o status for 200 irá receber o token da seguinte maneira. Ex.:
+
+{
+  "key": "fe796cd3a61750cd60588ad8c720347916fe9e2a"
+}
+
+Então, para acessar as views que possuem permissão de login, passar nos header o seguinte. Ex.:
+
+Authorization: Token fe796cd3a61750cd60588ad8c720347916fe9e2a

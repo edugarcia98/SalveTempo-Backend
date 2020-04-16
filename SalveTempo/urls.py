@@ -16,11 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.urlpatterns import format_suffix_patterns
+from rest_framework.authtoken.views import obtain_auth_token
 from app import views
 from account import views as accountviews
 
 urlpatterns = [
     path('app/', include('app.urls')),
+    path('rest-auth/', include('rest_auth.urls')),
     path('admin/', admin.site.urls),
     path('sintomas/', views.SintomaList.as_view()),
     path('sintomas/<int:pk>/', views.SintomaDetail.as_view()),
@@ -49,6 +51,7 @@ urlpatterns = [
     path('medicos_unidades_saude/', views.MedicoUnidadeSaudeList.as_view()),
     path('medicos_unidades_saude/<int:pk>/', views.MedicoUnidadeSaudeDetail.as_view()),
     path('test/', views.TestView.as_view()),
+    #path('salvetempo/token/', obtain_auth_token, name='obtain-token'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

@@ -10,6 +10,7 @@ from rest_framework.response import Response
 # Create your views here.
 
 class UserList(generics.ListCreateAPIView):
+    #Verificar se é possível e/ou necessário bloquear GET em User
     queryset = User.objects.all()
     serializer_class = UserSerializer
 

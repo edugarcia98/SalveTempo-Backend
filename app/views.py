@@ -7,6 +7,10 @@ from .serializers import *
 from rest_framework import mixins, generics, status, filters, views
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+
+import pandas as pd
+import numpy as np
 
 # Create your views here.
 
@@ -71,10 +75,14 @@ class DoencaDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = DoencaSerializer
 
 class EspecializacaoList(generics.ListCreateAPIView):
+    #permission_classes = (IsAuthenticated, )
+
     queryset = Especializacao.objects.all()
     serializer_class = EspecializacaoSerializer
 
 class EspecializacaoDetail(generics.RetrieveUpdateDestroyAPIView):
+    #permission_classes = (IsAuthenticated, )
+
     queryset = Especializacao.objects.all()
     serializer_class = EspecializacaoSerializer
 
@@ -124,12 +132,8 @@ class SintomaDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Sintoma.objects.all()
     serializer_class = SintomaSerializer
 
-class TestView(views.APIView):
-
-    def get(self, request):
-        data = []
-        for x in range(0, 100):
-            nums = {"a": x, "b": x}
-            data.append(nums)
-        results = TestSerializer(data, many=True).data
-        return Response(results)
+#class TestView(views.APIView):
+#    permission_classes = (IsAuthenticated, )
+#
+#    def get(self, request):
+#        
