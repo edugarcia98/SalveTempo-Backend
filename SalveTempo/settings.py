@@ -25,7 +25,7 @@ SECRET_KEY = '5n1mj05pt8eya=jfx$(q7tw3z%*yx=5km$!j=0h2uvey8n%!(1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.1.21', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'app.apps.AppConfig',
     'account.apps.AccountConfig',
+    'prognosticos.apps.PrognosticosConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

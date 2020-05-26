@@ -9,9 +9,6 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
-import pandas as pd
-import numpy as np
-
 # Create your views here.
 
 def index(request):
@@ -98,6 +95,9 @@ class EspecializacaoDoencaDetail(generics.RetrieveUpdateDestroyAPIView):
 #==========================================================================================================
 
 class PacienteList(generics.ListCreateAPIView):
+    search_fields = ['=usuario__email', ]
+    filter_backends = (filters.SearchFilter, )
+
     queryset = Paciente.objects.all()
     serializer_class = PacienteSerializer
 
@@ -131,9 +131,3 @@ class SintomaList(generics.ListCreateAPIView):
 class SintomaDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Sintoma.objects.all()
     serializer_class = SintomaSerializer
-
-#class TestView(views.APIView):
-#    permission_classes = (IsAuthenticated, )
-#
-#    def get(self, request):
-#        

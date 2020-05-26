@@ -11,6 +11,8 @@ from rest_framework.response import Response
 
 class UserList(generics.ListCreateAPIView):
     #Verificar se é possível e/ou necessário bloquear GET em User
+    search_fields = ['=email', ]
+    filter_backends = (filters.SearchFilter, )
     queryset = User.objects.all()
     serializer_class = UserSerializer
 

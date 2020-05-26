@@ -19,6 +19,7 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from rest_framework.authtoken.views import obtain_auth_token
 from app import views
 from account import views as accountviews
+from prognosticos import views as progviews
 
 urlpatterns = [
     path('app/', include('app.urls')),
@@ -50,7 +51,9 @@ urlpatterns = [
     path('medicos/<int:pk>/', views.MedicoDetail.as_view()),
     path('medicos_unidades_saude/', views.MedicoUnidadeSaudeList.as_view()),
     path('medicos_unidades_saude/<int:pk>/', views.MedicoUnidadeSaudeDetail.as_view()),
-    path('test/', views.TestView.as_view()),
+    path('showsintoma/', progviews.ShowSintomaView.as_view()),
+    path('answersintoma/', progviews.AnswerSintomaView.as_view()),
+    path('startconsulta/', progviews.StartConsulta.as_view()),
     #path('salvetempo/token/', obtain_auth_token, name='obtain-token'),
 ]
 

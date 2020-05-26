@@ -159,7 +159,3 @@ class SintomaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sintoma
         fields = '__all__'
-
-class ShowSintomaSerializer(serializers.Serializer):
-    nomecsv = serializers.CharField(max_length=100)
-    nome = serializers.CharField(max_length=150)
