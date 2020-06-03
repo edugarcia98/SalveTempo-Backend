@@ -14,14 +14,19 @@ import pandas as pd
 import numpy as np
 
 #Métodos
-def symptom_counter(prognosticos, symptoms, used_symptoms):
-    symptom_counter = []
-    sintomas = used_symptoms.keys()
-
+def process_prognosticos_data(prognosticos, used_symptoms):
     for key in used_symptoms.keys():
         answer = int(used_symptoms[key])
         if answer in (0, 1):
             prognosticos = prognosticos.loc[prognosticos[key] == answer]
+    
+    return prognosticos
+
+def symptom_counter(prognosticos, symptoms, used_symptoms):
+    symptom_counter = []
+    sintomas = used_symptoms.keys()
+
+    prognosticos = process_prognosticos_data(prognosticos, used_symptoms)
 
     for s in symptoms:
         if not s in sintomas:
@@ -32,12 +37,23 @@ def symptom_counter(prognosticos, symptoms, used_symptoms):
     return symptom_counter_ordered
 
 def doenca_counter(prognosticos, used_symptoms):
-    for key in used_symptoms.keys():
-        answer = int(used_symptoms[key])
-        if answer in (0, 1):
-            prognosticos = prognosticos.loc[prognosticos[key] == answer]
+    prognosticos = process_prognosticos_data(prognosticos, used_symptoms)
     doencas = prognosticos.prognostico.unique()
     return len(doencas)
+
+def resultados_prognosticos(prognosticos, used_symptoms):
+    prognosticos = process_prognosticos_data(prognosticos, used_symptoms)
+    doencas = prognosticos.prognostico.unique()
+
+    progs = []
+
+    for d in doencas:
+        pct = (len(prognosticos[prognosticos['prognostico'] == d])/len(prognosticos)) * 100
+        pct = round(pct, 2)
+        prog_dict = {'doenca': d, 'porcentagem': pct}
+        progs.append(prog_dict)
+    
+    return sorted(progs, key = lambda i: i['porcentagem'], reverse=True)
 
 #Iniciando o DataFrame
 df = pd.DataFrame(PrognosticoData.objects.values_list())
@@ -90,4 +106,13 @@ class AnswerSintomaView(views.APIView):
             valido = False
 
         data = [{"counter_doencas": n_doencas, "valido": valido}]
+        return Response(data, status=status.HTTP_201_CREATED)
+
+class ReturnPrognosticosView(views.APIView):
+    permission_classes = (IsAuthenticated, )
+
+    def post(self, request):
+        used_symptoms = request.data
+
+        data = resultados_prognosticos(prognosticos, used_symptoms)
         return Response(data, status=status.HTTP_201_CREATED)

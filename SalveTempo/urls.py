@@ -54,6 +54,7 @@ urlpatterns = [
     path('showsintoma/', progviews.ShowSintomaView.as_view()),
     path('answersintoma/', progviews.AnswerSintomaView.as_view()),
     path('startconsulta/', progviews.StartConsulta.as_view()),
+    path('returnprognosticos/', progviews.ReturnPrognosticosView.as_view()),
     #path('salvetempo/token/', obtain_auth_token, name='obtain-token'),
 ]
 
