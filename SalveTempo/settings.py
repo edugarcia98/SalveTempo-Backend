@@ -58,6 +58,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:4200',
+)
+
 ROOT_URLCONF = 'SalveTempo.urls'
 
 REST_FRAMEWORK = {

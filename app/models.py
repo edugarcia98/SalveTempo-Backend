@@ -64,53 +64,11 @@ class Endereco(models.Model):
         verbose_name = ("Endereço")
         verbose_name_plural = ("Endereços")
 
-class UnidadeSaude(models.Model):
-    TIPO_UNIDADE_SAUDE = (
-        ('PS', 'Posto de Saúde'),
-        ('UBS', 'Centro de Saúde/Unidade Básica de Saúde'),
-        ('PC', 'Policlínica'),
-        ('HG', 'Hospital Geral'),
-        ('HE', 'Hospital Especializado'),
-        ('UM', 'Unidade Mista'),
-        ('PSG', 'Pronto Socorro Geral'),
-        ('PSE', 'Pronto Socorro Especializado'),
-        ('CI', 'Consultório Isolado'),
-        ('UMF', 'Unidade Móvel Fluvial'),
-        ('CE', 'Clínica Especializada/Amb. Especializado'),
-        ('USADT', 'Unidade de Serviço de Apoio a Diagnose e Terapia'),
-        ('UMT', 'Unidade Móvel Terrestre'),
-        ('UMNPAUE', 'Unidade Móvel de Nível Pré-hospitalar na Área de Urgência e Emergência'),
-        ('HDI', 'Hospital/Dia-Isolado'),
-    )
-
-    nome = models.CharField(max_length=150, verbose_name="Nome")
-    endereco = models.ForeignKey(Endereco, verbose_name="Endereço", on_delete=models.CASCADE)
-    tipo = models.CharField(max_length=10, choices=TIPO_UNIDADE_SAUDE, verbose_name="Tipo")
-    
-    def __str__(self):
-        return self.nome
-
-    class Meta:
-        ordering = ('nome',)
-        verbose_name = ("Unidade de Saúde")
-        verbose_name_plural = ("Unidades de Saúde")
-
 #Doenças
 #==========================================================================================================
-class Doenca(models.Model):
-    nome = models.CharField(max_length=100, verbose_name="Nome")
-    
-    def __str__(self):
-        return self.nome
-
-    class Meta:
-        ordering = ('nome',)
-        verbose_name = ("Doença")
-        verbose_name_plural = ("Doenças")
-
 class Especializacao(models.Model):
     nome = models.CharField(max_length=70, verbose_name="Nome")
-    doencas = models.ManyToManyField(Doenca, verbose_name="Doenças", through='EspecializacaoDoenca')
+    #doencas = models.ManyToManyField(Doenca, verbose_name="Doenças", through='EspecializacaoDoenca')
     
     def __str__(self):
         return self.nome
@@ -119,6 +77,18 @@ class Especializacao(models.Model):
         ordering = ('nome',)
         verbose_name = ("Especialização")
         verbose_name_plural = ("Especializações")
+
+class Doenca(models.Model):
+    nome = models.CharField(max_length=100, verbose_name="Nome")
+    especializacoes = models.ManyToManyField(Especializacao, verbose_name="Especializações", through="EspecializacaoDoenca")
+    
+    def __str__(self):
+        return self.nome
+
+    class Meta:
+        ordering = ('nome',)
+        verbose_name = ("Doença")
+        verbose_name_plural = ("Doenças")
 
 class EspecializacaoDoenca(models.Model):
     especializacao = models.ForeignKey(Especializacao, verbose_name="Especialização", on_delete=models.CASCADE)
@@ -161,7 +131,8 @@ class Paciente(Usuario):
 
 class Medico(Usuario):
     usuario = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='medico')
-    unidadesSaude = models.ManyToManyField(UnidadeSaude, verbose_name="Unidades de Saúde", through='MedicoUnidadeSaude')
+    crm = models.CharField(max_length=20, verbose_name="CRM")
+    #unidadesSaude = models.ManyToManyField(UnidadeSaude, verbose_name="Unidades de Saúde", through='MedicoUnidadeSaude')
     especializacao = models.ForeignKey(Especializacao, verbose_name="Especialização", on_delete=models.CASCADE)
 
     def __str__(self):
@@ -171,6 +142,38 @@ class Medico(Usuario):
         ordering = ('nome',)
         verbose_name = ("Médico")
         verbose_name_plural = ("Médicos")
+
+class UnidadeSaude(models.Model):
+    TIPO_UNIDADE_SAUDE = (
+        ('PS', 'Posto de Saúde'),
+        ('UBS', 'Centro de Saúde/Unidade Básica de Saúde'),
+        ('PC', 'Policlínica'),
+        ('HG', 'Hospital Geral'),
+        ('HE', 'Hospital Especializado'),
+        ('UM', 'Unidade Mista'),
+        ('PSG', 'Pronto Socorro Geral'),
+        ('PSE', 'Pronto Socorro Especializado'),
+        ('CI', 'Consultório Isolado'),
+        ('UMF', 'Unidade Móvel Fluvial'),
+        ('CE', 'Clínica Especializada/Amb. Especializado'),
+        ('USADT', 'Unidade de Serviço de Apoio a Diagnose e Terapia'),
+        ('UMT', 'Unidade Móvel Terrestre'),
+        ('UMNPAUE', 'Unidade Móvel de Nível Pré-hospitalar na Área de Urgência e Emergência'),
+        ('HDI', 'Hospital/Dia-Isolado'),
+    )
+
+    nome = models.CharField(max_length=150, verbose_name="Nome")
+    endereco = models.ForeignKey(Endereco, verbose_name="Endereço", on_delete=models.CASCADE)
+    tipo = models.CharField(max_length=10, choices=TIPO_UNIDADE_SAUDE, verbose_name="Tipo")
+    medicos = models.ManyToManyField(Medico, verbose_name="Médicos", through='MedicoUnidadeSaude')
+    
+    def __str__(self):
+        return self.nome
+
+    class Meta:
+        ordering = ('nome',)
+        verbose_name = ("Unidade de Saúde")
+        verbose_name_plural = ("Unidades de Saúde")
 
 class MedicoUnidadeSaude(models.Model):
     medico = models.ForeignKey(Medico, verbose_name="Médico", on_delete=models.CASCADE)
