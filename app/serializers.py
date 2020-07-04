@@ -1,6 +1,6 @@
 from .models import *
-from account.models import *
-from account.serializers import *
+from accountuser.models import *
+from accountuser.serializers import *
 from rest_framework import serializers
 
 #Localização
