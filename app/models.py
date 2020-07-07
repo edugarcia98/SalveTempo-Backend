@@ -176,9 +176,16 @@ class UnidadeSaude(models.Model):
         verbose_name_plural = ("Unidades de Saúde")
 
 class MedicoUnidadeSaude(models.Model):
+    STATUS_RELACAO = (
+        ('P', 'Pendente'),
+        ('A', 'Aprovado'),
+        ('R', 'Recusado'),
+    )
+
     medico = models.ForeignKey(Medico, verbose_name="Médico", on_delete=models.CASCADE)
     unidadeSaude = models.ForeignKey(UnidadeSaude, verbose_name="Unidade de Saúde", on_delete=models.CASCADE)
     diaPeriodoTrabalho = models.CharField(max_length=500, verbose_name="Dias e Período de Trabalho")
+    status = models.CharField(max_length=1, choices=STATUS_RELACAO, verbose_name="Status")
 
     def __str__(self):
         return self.medico.nome + ' - ' + self.unidadeSaude.nome

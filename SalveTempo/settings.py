@@ -178,8 +178,8 @@ STATIC_URL = '/static/'
 
 # Email backend settings for Django
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'youremail@gmail.com'
-EMAIL_HOST_PASSWORD = 'yourpassword'
+EMAIL_HOST = ''
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = 'dc^53vXZ\<'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True

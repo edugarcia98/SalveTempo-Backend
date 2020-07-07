@@ -31,6 +31,8 @@ from accountuser import views as accountviews
 from prognosticos import views as progviews
 
 urlpatterns = [
+    path('password/', include('django.contrib.auth.urls')),
+
     path('app/', include('app.urls')),
 
     path('rest-auth/', include('rest_auth.urls')),

@@ -25,7 +25,7 @@ class PaisDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PaisSerializer
 
 class EstadoList(generics.ListCreateAPIView):
-    search_fields = ['pais__nome', ]
+    search_fields = ['=pais__id', ]
     filter_backends = (filters.SearchFilter, )
     queryset = Estado.objects.all()
     serializer_class = EstadoSerializer
@@ -35,7 +35,7 @@ class EstadoDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = EstadoSerializer
 
 class CidadeList(generics.ListCreateAPIView):
-    search_fields = ['estado__sigla', ]
+    search_fields = ['=estado__id', ]
     filter_backends = (filters.SearchFilter, )
     queryset = Cidade.objects.all()
     serializer_class = CidadeSerializer
@@ -53,6 +53,9 @@ class EnderecoDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = EnderecoSerializer
 
 class UnidadeSaudeList(generics.ListCreateAPIView):
+    search_fields = ['=endereco__cidade__id', ]
+    filter_backends = (filters.SearchFilter, )
+
     queryset = UnidadeSaude.objects.all()
     serializer_class = UnidadeSaudeSerializer
 
@@ -106,6 +109,9 @@ class PacienteDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PacienteSerializer
 
 class MedicoList(generics.ListCreateAPIView):
+    search_fields = ['=usuario__email', ]
+    filter_backends = (filters.SearchFilter, )
+
     queryset = Medico.objects.all()
     serializer_class = MedicoSerializer
 
@@ -114,10 +120,17 @@ class MedicoDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = MedicoSerializer
 
 class MedicoUnidadeSaudeList(generics.ListCreateAPIView):
+    permission_classes = (IsAuthenticated, )
+
+    search_fields = ['=medico__id', ]
+    filter_backends = (filters.SearchFilter, )
+
     queryset = MedicoUnidadeSaude.objects.all()
     serializer_class = MedicoUnidadeSaudeSerializer
 
 class MedicoUnidadeSaudeDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsAuthenticated, )
+
     queryset = MedicoUnidadeSaude.objects.all()
     serializer_class = MedicoUnidadeSaudeSerializer
 
