@@ -84,7 +84,11 @@ urlpatterns = [
     path('medicos/<int:pk>/', views.MedicoDetail.as_view()),
 
     path('medicos_unidades_saude/', views.MedicoUnidadeSaudeList.as_view()),
+    path('medicos_unidades_saude_admin/', views.MedicoUnidadeSaudeAdminList.as_view()),
     path('medicos_unidades_saude/<int:pk>/', views.MedicoUnidadeSaudeDetail.as_view()),
+
+    path('admins_unidades_saude/', views.AdminUnidadeSaudeList.as_view()),
+    path('admins_unidades_saude/<int:pk>/', views.AdminUnidadeSaudeDetail.as_view()),
 
     path('showsintoma/', progviews.ShowSintomaView.as_view()),
     path('answersintoma/', progviews.AnswerSintomaView.as_view()),

@@ -128,11 +128,31 @@ class MedicoUnidadeSaudeList(generics.ListCreateAPIView):
     queryset = MedicoUnidadeSaude.objects.all()
     serializer_class = MedicoUnidadeSaudeSerializer
 
+class MedicoUnidadeSaudeAdminList(generics.ListCreateAPIView):
+    #permission_classes = (IsAuthenticated, )
+
+    search_fields = ['=unidadeSaude__id', ]
+    filter_backends = (filters.SearchFilter, )
+
+    queryset = MedicoUnidadeSaude.objects.all()
+    serializer_class = MedicoUnidadeSaudeSerializer
+
 class MedicoUnidadeSaudeDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthenticated, )
 
     queryset = MedicoUnidadeSaude.objects.all()
     serializer_class = MedicoUnidadeSaudeSerializer
+
+class AdminUnidadeSaudeList(generics.ListCreateAPIView):
+    search_fields = ['=usuario__email', ]
+    filter_backends = (filters.SearchFilter, )
+
+    queryset = AdminUnidadeSaude.objects.all()
+    serializer_class = AdminUnidadeSaudeSerializer
+
+class AdminUnidadeSaudeDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = AdminUnidadeSaude.objects.all()
+    serializer_class = AdminUnidadeSaudeSerializer
 
 #Consulta
 #==========================================================================================================

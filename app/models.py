@@ -194,6 +194,18 @@ class MedicoUnidadeSaude(models.Model):
         verbose_name = ("Médico - Unidade de Saúde")
         verbose_name_plural = ("Médicos - Unidades de Saúde")
 
+class AdminUnidadeSaude(Usuario):
+    usuario = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='adminUnidadeSaude')
+    unidadeSaudeResponsavel = models.ForeignKey(UnidadeSaude, verbose_name="Unidade de Saúde", on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.nome
+
+    class Meta:
+        ordering = ('nome',)
+        verbose_name = ("Administrador de Unidade de Saúde")
+        verbose_name_plural = ("Administrador de Unidades de Saúde")
+
 #Consulta
 #==========================================================================================================
 class Sintoma(models.Model):

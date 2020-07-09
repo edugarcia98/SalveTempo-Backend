@@ -151,6 +151,25 @@ class MedicoUnidadeSaudeSerializer(serializers.ModelSerializer):
         depth = 1
         fields = '__all__'
 
+class AdminUnidadeSaudeSerializer(serializers.ModelSerializer):
+
+    usuario = UserSerializer(read_only=True)
+
+    usuario_id = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all(), source='usuario', write_only=True
+    )
+
+    unidadeSaudeResponsavel = UnidadeSaudeSerializer(read_only=True)
+
+    unidadeSaudeResponsavel_id = serializers.PrimaryKeyRelatedField(
+        queryset=UnidadeSaude.objects.all(), source='unidadeSaudeResponsavel', write_only=True
+    )
+
+    class Meta:
+        model = AdminUnidadeSaude
+        depth = 1
+        fields = '__all__'
+
 #Consulta
 #==========================================================================================================
 
