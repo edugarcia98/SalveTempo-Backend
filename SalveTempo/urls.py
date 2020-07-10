@@ -90,6 +90,8 @@ urlpatterns = [
     path('admins_unidades_saude/', views.AdminUnidadeSaudeList.as_view()),
     path('admins_unidades_saude/<int:pk>/', views.AdminUnidadeSaudeDetail.as_view()),
 
+    path('resposta_solicitacao/', views.RespostaSolicitacaoView.as_view()),
+
     path('showsintoma/', progviews.ShowSintomaView.as_view()),
     path('answersintoma/', progviews.AnswerSintomaView.as_view()),
     path('startconsulta/', progviews.StartConsulta.as_view()),

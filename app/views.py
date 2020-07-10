@@ -9,6 +9,53 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
+from SalveTempo import settings
+
+#SMTP
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+import smtplib
+
+#Métodos
+def email_content(medicoUnidadeSaude, status):
+    msg = MIMEMultipart()
+
+    msg['From'] = settings.EMAIL_HOST_USER
+    msg['To'] = medicoUnidadeSaude.medico.usuario.email
+    msg['Subject'] = 'Solicitação de integração em ' + medicoUnidadeSaude.unidadeSaude.nome
+
+    answer = ''
+
+    if status == 'A':
+        answer = 'aprovada'
+    else:
+        answer = 'recusada'
+    
+    greetings = 'Olá ' + medicoUnidadeSaude.medico.nome + ',\n\n'
+    message = 'Sua solicitação para integração na unidade de saúde ' + medicoUnidadeSaude.unidadeSaude.nome + ' foi ' + answer + '.\n\n'
+    end = 'Atenciosamente,\nEquipe SalveTempo'
+    
+
+    msg.attach(MIMEText(greetings, 'plain'))
+    msg.attach(MIMEText(message, 'plain'))
+    msg.attach(MIMEText(end, 'plain'))
+
+    return msg
+
+def send_answer_email(medicoUnidadeSaude, status):
+    msg = email_content(medicoUnidadeSaude, status)
+
+    server = smtplib.SMTP(settings.EMAIL_HOST + ': ' + str(settings.EMAIL_PORT))
+    server.starttls()
+
+    server.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+
+    server.sendmail(settings.EMAIL_HOST_USER, medicoUnidadeSaude.medico.usuario.email, msg.as_string())
+
+    server.quit()
+
+    print('Email Enviado')
+
 # Create your views here.
 
 def index(request):
@@ -164,3 +211,18 @@ class SintomaList(generics.ListCreateAPIView):
 class SintomaDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Sintoma.objects.all()
     serializer_class = SintomaSerializer
+
+#Envio de e-mail - Resposta de solicitação de Integração
+#===========================================================================================================
+
+class RespostaSolicitacaoView(views.APIView):
+    permission_classes = (IsAuthenticated, )
+
+    def post(self, request):
+        data = request.data
+
+        medicoUnidadeSaude = MedicoUnidadeSaude.objects.get(pk=data['medicoUnidadeSaude_id'])
+        send_answer_email(medicoUnidadeSaude, data['status'])
+        #print(medicoUnidadeSaude.medico.usuario.email)
+
+        return Response(data)
