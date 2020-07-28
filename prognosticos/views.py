@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, Http404
 
 from .models import *
-from app.models import Sintoma
+from app.models import Sintoma, Doenca
 from .serializers import *
 
 from rest_framework import mixins, generics, status, filters, views
@@ -50,7 +50,10 @@ def resultados_prognosticos(prognosticos, used_symptoms):
     for d in doencas:
         pct = (len(prognosticos[prognosticos['prognostico'] == d])/len(prognosticos)) * 100
         pct = round(pct, 2)
-        prog_dict = {'doenca': d, 'porcentagem': pct}
+
+        doenca_bd = Doenca.objects.get(nome=d)
+
+        prog_dict = {'id': doenca_bd.id, 'doenca': d, 'porcentagem': pct}
         progs.append(prog_dict)
     
     return sorted(progs, key = lambda i: i['porcentagem'], reverse=True)
@@ -89,7 +92,9 @@ class ShowSintomaView(views.APIView):
         sintomas = symptom_counter(prognosticos, symptoms, used_symptoms)
         sintoma = sintomas[0]['symptom']
         
-        data = [{"nomecsv": sintoma, "nome": Sintoma.objects.get(nomecsv=sintoma).nome}]
+        sintoma_bd = Sintoma.objects.get(nomecsv=sintoma)
+
+        data = [{"id": sintoma_bd.id, "nomecsv": sintoma, "nome": sintoma_bd.nome}]
         results = ShowSintomaSerializer(data, many=True).data
         return Response(results)
 

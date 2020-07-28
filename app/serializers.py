@@ -178,3 +178,66 @@ class SintomaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sintoma
         fields = '__all__'
+
+class ConsultaSerializer(serializers.ModelSerializer):
+
+    paciente = PacienteSerializer(read_only=True)
+
+    paciente_id = serializers.PrimaryKeyRelatedField(
+        queryset=Paciente.objects.all(), source='paciente', write_only=True
+    )
+
+    unidadeSaude = UnidadeSaudeSerializer(read_only=True)
+
+    unidadeSaude_id = serializers.PrimaryKeyRelatedField(
+        queryset=UnidadeSaude.objects.all(), source='unidadeSaude', write_only=True
+    )
+
+    medico = MedicoSerializer(read_only=True)
+
+    medico_id = serializers.PrimaryKeyRelatedField(
+        queryset=Medico.objects.all(), source='medico', write_only=True
+    )
+
+    class Meta:
+        model = Consulta
+        depth = 1
+        fields = '__all__'
+
+class ConsultaSintomaSerializer(serializers.ModelSerializer):
+
+    consulta = ConsultaSerializer(read_only=True)
+
+    consulta_id = serializers.PrimaryKeyRelatedField(
+        queryset=Consulta.objects.all(), source='consulta', write_only=True
+    )
+
+    sintoma = SintomaSerializer(read_only=True)
+
+    sintoma_id = serializers.PrimaryKeyRelatedField(
+        queryset=Sintoma.objects.all(), source='sintoma', write_only=True
+    )
+
+    class Meta:
+        model = ConsultaSintoma
+        depth = 1
+        fields = '__all__'
+
+class PrognosticoSerializer(serializers.ModelSerializer):
+
+    consulta = ConsultaSerializer(read_only=True)
+
+    consulta_id = serializers.PrimaryKeyRelatedField(
+        queryset=Consulta.objects.all(), source='consulta', write_only=True
+    )
+
+    doenca = DoencaSerializer(read_only=True)
+
+    doenca_id = serializers.PrimaryKeyRelatedField(
+        queryset=Doenca.objects.all(), source='doenca', write_only=True
+    )
+
+    class Meta:
+        model = Prognostico
+        depth = 1
+        fields = '__all__'

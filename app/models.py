@@ -227,6 +227,10 @@ class Consulta(models.Model):
         ('N', 'Noite'),
     )
 
+    STATUS_CONSULTA = (
+        ('P', 'Pendente'),
+    )
+
     paciente = models.ForeignKey(Paciente, verbose_name="Paciente", on_delete=models.CASCADE)
     unidadeSaude = models.ForeignKey(UnidadeSaude, verbose_name="Unidade de Saúde", on_delete=models.CASCADE)
     #anamnese: pesquisar todos os campos
@@ -236,6 +240,8 @@ class Consulta(models.Model):
     periodo = models.CharField(max_length=1, choices=PERIODO, verbose_name="Período")
     prognosticos = models.ManyToManyField(Doenca, verbose_name='Prognóstico', through='Prognostico')
     percentual_assertividade_prognostico = models.FloatField(verbose_name="Percentual de Assertividade do Prognóstico")
+    observacao = models.CharField(max_length=1000, blank=True, verbose_name="Observação")
+    status = models.CharField(max_length=1, choices=STATUS_CONSULTA, verbose_name="Status")
 
     def __str__(self):
         return 'Consulta do paciente ' + self.paciente.nome + ' com o Doutor ' + self.medico.nome + ' no dia ' + str(self.data) + ' no período da ' + self.periodo
@@ -245,8 +251,13 @@ class Consulta(models.Model):
         verbose_name_plural = ("Consultas")
 
 class ConsultaSintoma(models.Model):
+    NUM_CHOICES = ((0,'0'),
+                   (1,'1'),
+                   (-1,'-1'),)
+
     consulta = models.ForeignKey(Consulta, verbose_name="Consulta", on_delete=models.CASCADE)
     sintoma = models.ForeignKey(Sintoma, verbose_name="Sintoma", on_delete=models.CASCADE)
+    possui = models.IntegerField(choices=NUM_CHOICES, verbose_name="Possui")
 
     def __str__(self):
         return str(self.consulta) + ' - ' + self.sintoma.nome

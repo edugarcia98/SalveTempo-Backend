@@ -176,7 +176,7 @@ class MedicoUnidadeSaudeList(generics.ListCreateAPIView):
     serializer_class = MedicoUnidadeSaudeSerializer
 
 class MedicoUnidadeSaudeAdminList(generics.ListCreateAPIView):
-    #permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated, )
 
     search_fields = ['=unidadeSaude__id', ]
     filter_backends = (filters.SearchFilter, )
@@ -211,6 +211,38 @@ class SintomaList(generics.ListCreateAPIView):
 class SintomaDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Sintoma.objects.all()
     serializer_class = SintomaSerializer
+
+class ConsultaList(generics.ListCreateAPIView):
+    permission_classes = (IsAuthenticated, )
+
+    queryset = Consulta.objects.all()
+    serializer_class = ConsultaSerializer
+
+class ConsultaDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsAuthenticated, )
+
+    queryset = Consulta.objects.all()
+    serializer_class = ConsultaSerializer
+
+class ConsultaSintomaList(generics.ListCreateAPIView):
+    permission_classes = (IsAuthenticated, )
+
+    queryset = ConsultaSintoma.objects.all()
+    serializer_class = ConsultaSintomaSerializer
+
+class ConsultaSintomaDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsAuthenticated, )
+
+    queryset = ConsultaSintoma.objects.all()
+    serializer_class = ConsultaSintomaSerializer
+
+class PrognosticoList(generics.ListCreateAPIView):
+    queryset = Prognostico.objects.all()
+    serializer_class = PrognosticoSerializer
+
+class PrognosticoDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Prognostico.objects.all()
+    serializer_class = PrognosticoSerializer
 
 #Envio de e-mail - Resposta de solicitação de Integração
 #===========================================================================================================
