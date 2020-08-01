@@ -9,6 +9,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
+from django_filters.rest_framework import DjangoFilterBackend
+
 from SalveTempo import settings
 
 #SMTP
@@ -218,8 +220,12 @@ class ConsultaList(generics.ListCreateAPIView):
     queryset = Consulta.objects.all()
     serializer_class = ConsultaSerializer
 
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['medico__id', 'status']
+    
+
 class ConsultaDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsAuthenticated, )
+    #permission_classes = (IsAuthenticated, )
 
     queryset = Consulta.objects.all()
     serializer_class = ConsultaSerializer
