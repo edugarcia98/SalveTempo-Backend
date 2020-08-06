@@ -207,10 +207,14 @@ class AdminUnidadeSaudeDetail(generics.RetrieveUpdateDestroyAPIView):
 #==========================================================================================================
 
 class SintomaList(generics.ListCreateAPIView):
+    permission_classes = (IsAuthenticated, )
+
     queryset = Sintoma.objects.all()
     serializer_class = SintomaSerializer
 
 class SintomaDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsAuthenticated, )
+    
     queryset = Sintoma.objects.all()
     serializer_class = SintomaSerializer
 
@@ -223,15 +227,17 @@ class ConsultaList(generics.ListCreateAPIView):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['medico__id', 'status']
     
-
 class ConsultaDetail(generics.RetrieveUpdateDestroyAPIView):
-    #permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated, )
 
     queryset = Consulta.objects.all()
     serializer_class = ConsultaSerializer
 
 class ConsultaSintomaList(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticated, )
+
+    search_fields = ['=consulta__id', ]
+    filter_backends = (filters.SearchFilter, )
 
     queryset = ConsultaSintoma.objects.all()
     serializer_class = ConsultaSintomaSerializer
@@ -243,10 +249,17 @@ class ConsultaSintomaDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ConsultaSintomaSerializer
 
 class PrognosticoList(generics.ListCreateAPIView):
+    permission_classes = (IsAuthenticated, )
+
+    search_fields = ['=consulta__id', ]
+    filter_backends = (filters.SearchFilter, )
+
     queryset = Prognostico.objects.all()
     serializer_class = PrognosticoSerializer
 
 class PrognosticoDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsAuthenticated, )
+
     queryset = Prognostico.objects.all()
     serializer_class = PrognosticoSerializer
 
