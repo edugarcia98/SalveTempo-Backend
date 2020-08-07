@@ -116,10 +116,14 @@ class UnidadeSaudeDetail(generics.RetrieveUpdateDestroyAPIView):
 #==========================================================================================================
 
 class DoencaList(generics.ListCreateAPIView):
+    permission_classes = (IsAuthenticated, )
+
     queryset = Doenca.objects.all()
     serializer_class = DoencaSerializer
 
 class DoencaDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsAuthenticated, )
+
     queryset = Doenca.objects.all()
     serializer_class = DoencaSerializer
 

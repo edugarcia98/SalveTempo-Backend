@@ -199,6 +199,12 @@ class ConsultaSerializer(serializers.ModelSerializer):
         queryset=Medico.objects.all(), source='medico', write_only=True
     )
 
+    diagnostico = DoencaSerializer(read_only=True)
+
+    diagnostico_id = serializers.PrimaryKeyRelatedField(
+        queryset=Doenca.objects.all(), source='diagnostico', write_only=True, allow_null=True
+    )
+
     class Meta:
         model = Consulta
         depth = 1

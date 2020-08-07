@@ -242,6 +242,7 @@ class Consulta(models.Model):
     percentual_assertividade_prognostico = models.FloatField(verbose_name="Percentual de Assertividade do Prognóstico")
     observacao = models.CharField(max_length=1000, blank=True, verbose_name="Observação")
     status = models.CharField(max_length=1, choices=STATUS_CONSULTA, verbose_name="Status")
+    diagnostico = models.ForeignKey(Doenca, null=True, related_name='diagnostico', verbose_name="Diagnóstico", on_delete=models.CASCADE)
 
     def __str__(self):
         return 'Consulta do paciente ' + self.paciente.nome + ' com o Doutor ' + self.medico.nome + ' no dia ' + str(self.data) + ' no período da ' + self.periodo
