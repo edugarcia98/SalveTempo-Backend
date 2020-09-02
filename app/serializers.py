@@ -179,6 +179,12 @@ class SintomaSerializer(serializers.ModelSerializer):
         model = Sintoma
         fields = '__all__'
 
+class AnamneseSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Anamnese
+        fields = '__all__'
+
 class ConsultaSerializer(serializers.ModelSerializer):
 
     paciente = PacienteSerializer(read_only=True)
@@ -191,6 +197,12 @@ class ConsultaSerializer(serializers.ModelSerializer):
 
     unidadeSaude_id = serializers.PrimaryKeyRelatedField(
         queryset=UnidadeSaude.objects.all(), source='unidadeSaude', write_only=True
+    )
+
+    anamnese = AnamneseSerializer(read_only=True)
+
+    anamnese_id = serializers.PrimaryKeyRelatedField(
+        queryset=Anamnese.objects.all(), source='anamnese', write_only=True
     )
 
     medico = MedicoSerializer(read_only=True)

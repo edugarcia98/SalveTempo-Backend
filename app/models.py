@@ -219,6 +219,60 @@ class Sintoma(models.Model):
         ordering = ('nome',)
         verbose_name = ("Sintoma")
         verbose_name_plural = ("Sintomas")
+    
+class Anamnese(models.Model):
+    QLD_ALIM_ING_AGUA = (
+        (1, 'Boa'),
+        (2, 'Regular'),
+        (3, 'Ruim')
+    )
+
+    TP_DIABETES = (
+        (1, 'Tipo 1'),
+        (2, 'Tipo 2'),
+        (3, 'Gestacional')
+    )
+    
+    #Informações Pessoais
+    peso = models.FloatField(verbose_name="Peso (kg)")
+    altura = models.FloatField(verbose_name="Altura (m)")
+    fuma = models.BooleanField(verbose_name="Fuma?")
+    qtdCigarrosDia = models.IntegerField(blank=True, null=True, verbose_name="Quantidade de Cigarros (Dia)")
+    bebe = models.BooleanField(verbose_name="Bebe?")
+    freqBebeDiasSemana = models.IntegerField(blank=True, null=True, verbose_name="Frequência que Bebe (Dias da Semana)")
+    qualidadeAlimentacaoIngestaoAgua = models.IntegerField(choices=QLD_ALIM_ING_AGUA, verbose_name="Qualidade da Alimentação e Ingestão de Água")
+    praticaAtividadeFisica = models.BooleanField(verbose_name="Pratica Atividades Físicas?")
+    tipoAtividadeFisica = models.CharField(max_length=200, blank=True, null=True, verbose_name="Tipo de Atividade Física")
+    freqAtividadeFisicaDiasSemana = models.IntegerField(blank=True, null=True, verbose_name="Frequência de Atividades Físicas (Dias da Semana)")
+    utilizaAnticoncepcional = models.BooleanField(verbose_name="Utiliza Anticoncepcional?")
+    anticoncepcionaisUtilizados = models.CharField(max_length=100, blank=True, null=True, verbose_name="Anticoncepcionais Utilizados")
+    realizouGestacoes = models.BooleanField(verbose_name="Realizou Gestações?")
+    ultimaGestacaoTempoMeses = models.IntegerField(blank=True, null=True, verbose_name="Tempo da Última Gestação (Meses)")
+
+    #Informações Clínicas
+    utilizaMedicamentos = models.BooleanField(verbose_name="Utiliza Medicamentos?")
+    medicamentosUtilizados = models.CharField(max_length=150, blank=True, null=True, verbose_name="Medicamentos utilizados")
+    alergias = models.BooleanField(verbose_name="Possui/Possuiu alergias?")
+    alergiasDesc = models.CharField(max_length=100, blank=True, null=True, verbose_name="Alergias")
+    alteracoesCardiacas = models.BooleanField(verbose_name="Possui/Possui alterações cardíacas?")
+    alteracoesCardiacasDesc = models.CharField(max_length=100, blank=True, null=True, verbose_name="Alterações Cardíacas")
+    pressaoAlta = models.BooleanField(verbose_name="Possui pressão alta?")
+    pressaoBaixa = models.BooleanField(verbose_name="Possui pressão baixa?")
+    disturbioCirculatorio = models.BooleanField(verbose_name="Possui/Possuiu distúrbios circulatório?")
+    disturbioCirculatorioDesc = models.CharField(max_length=100, blank=True, null=True, verbose_name="Distúrbios circulatórios")
+    disturbioHormonal = models.BooleanField(verbose_name="Possui/Possuiu distúrbios hormonais?")
+    disturbioHormonalDesc = models.CharField(max_length=100, blank=True, null=True, verbose_name="Distúrbios hormonais")
+    diabetes = models.BooleanField(verbose_name="Possui diabetes?")
+    tipoDiabetes = models.IntegerField(choices=TP_DIABETES, blank=True, null=True, verbose_name="Tipo de diabetes")
+    fezCirurgias = models.BooleanField(verbose_name="Realizou cirurgias?")
+    cirurgiasDesc = models.CharField(max_length=100, blank=True, null=True, verbose_name="Cirurgias realizadas")
+
+    def __str__(self):
+        return 'Paciente: Peso: ' + str(self.peso) + ' - Altura: ' + str(self.altura)
+
+    class Meta:
+        verbose_name = ("Anamnese")
+        verbose_name_plural = ("Anamneses")
 
 class Consulta(models.Model):
     PERIODO = (
@@ -229,11 +283,13 @@ class Consulta(models.Model):
 
     STATUS_CONSULTA = (
         ('P', 'Pendente'),
+        ('A', 'Aguardando Exames'),
+        ('F', 'Finalizada')
     )
 
     paciente = models.ForeignKey(Paciente, verbose_name="Paciente", on_delete=models.CASCADE)
     unidadeSaude = models.ForeignKey(UnidadeSaude, verbose_name="Unidade de Saúde", on_delete=models.CASCADE)
-    #anamnese: pesquisar todos os campos
+    anamnese = models.OneToOneField(Anamnese, on_delete=models.CASCADE)
     sintomas = models.ManyToManyField(Sintoma, verbose_name="Sintomas", through='ConsultaSintoma')
     medico = models.ForeignKey(Medico, verbose_name="Médico", on_delete=models.CASCADE)
     data = models.DateField(verbose_name="Data da Consulta")

@@ -97,6 +97,8 @@ urlpatterns = [
     path('startconsulta/', progviews.StartConsulta.as_view()),
     path('returnprognosticos/', progviews.ReturnPrognosticosView.as_view()),
 
+    path('anamneses/', views.AnamneseList.as_view()),
+
     path('consultas/', views.ConsultaList.as_view()),
     path('consultas/<int:pk>/', views.ConsultaDetail.as_view()),
 
