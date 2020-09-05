@@ -128,7 +128,7 @@ class DoencaDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = DoencaSerializer
 
 class EspecializacaoList(generics.ListCreateAPIView):
-    permission_classes = (IsAuthenticated, )
+    #permission_classes = (IsAuthenticated, )
 
     queryset = Especializacao.objects.all()
     serializer_class = EspecializacaoSerializer

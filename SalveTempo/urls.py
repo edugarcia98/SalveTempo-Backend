@@ -96,6 +96,7 @@ urlpatterns = [
     path('answersintoma/', progviews.AnswerSintomaView.as_view()),
     path('startconsulta/', progviews.StartConsulta.as_view()),
     path('returnprognosticos/', progviews.ReturnPrognosticosView.as_view()),
+    path('save-prognostico/', progviews.SavePrognosticoToDb.as_view()),
 
     path('anamneses/', views.AnamneseList.as_view()),
 
@@ -106,7 +107,8 @@ urlpatterns = [
     path('consultas-sintomas/<int:pk>/', views.ConsultaSintomaDetail.as_view()),
 
     path('consultas-prognosticos/', views.PrognosticoList.as_view()),
-    path('consultas-prognosticos/<int:pk>/', views.PrognosticoDetail.as_view())
+    path('consultas-prognosticos/<int:pk>/', views.PrognosticoDetail.as_view()),
+    
 
     #path('salvetempo/token/', obtain_auth_token, name='obtain-token'),
 ]

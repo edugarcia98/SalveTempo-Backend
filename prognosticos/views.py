@@ -121,3 +121,23 @@ class ReturnPrognosticosView(views.APIView):
 
         data = resultados_prognosticos(prognosticos, used_symptoms)
         return Response(data, status=status.HTTP_201_CREATED)
+
+class SavePrognosticoToDb(views.APIView):
+    #permission_classes = (IsAuthenticated, )
+
+    def post(self, request):
+        data = request.data
+        keys = data.keys()
+        
+        p = PrognosticoData()
+
+        for key in keys:
+            setattr(p, key, data[key])
+        print(p.casca_ferida_amarela)
+        print(p.febre_alta)
+        print(p.comichao)
+        print(p.prognostico)
+
+        p.save()
+        
+        return Response({'ok': 'ok'});
