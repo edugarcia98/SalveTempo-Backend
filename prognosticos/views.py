@@ -123,21 +123,22 @@ class ReturnPrognosticosView(views.APIView):
         return Response(data, status=status.HTTP_201_CREATED)
 
 class SavePrognosticoToDb(views.APIView):
-    #permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated, )
 
     def post(self, request):
         data = request.data
+        print(data)
         keys = data.keys()
         
         p = PrognosticoData()
 
         for key in keys:
             setattr(p, key, data[key])
-        print(p.casca_ferida_amarela)
-        print(p.febre_alta)
-        print(p.comichao)
-        print(p.prognostico)
 
-        p.save()
-        
-        return Response({'ok': 'ok'});
+        if p.prognostico == '':
+            response = {'error': 'O campo "prognostico" não pode ser vazio'}
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            p.save()
+        response = {'success': 'Resultado de consulta salvo com sucesso'}
+        return Response(response, status=status.HTTP_201_CREATED)
