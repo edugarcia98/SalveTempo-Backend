@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, Http404
+from django.db import connection
 
 from .models import *
 from app.models import Sintoma, Doenca
@@ -13,20 +14,18 @@ from rest_framework.permissions import IsAuthenticated
 import pandas as pd
 import numpy as np
 
+from unidecode import unidecode
+
 #Métodos
-def process_prognosticos_data(prognosticos, used_symptoms):
-    for key in used_symptoms.keys():
-        answer = int(used_symptoms[key])
-        if answer in (0, 1):
-            prognosticos = prognosticos.loc[prognosticos[key] == answer]
-    
-    return prognosticos
+def hasValidData(data):
+    for key in data.keys():
+        if data[key] in ('0', '1'):
+            return True
+    return False
 
 def symptom_counter(prognosticos, symptoms, used_symptoms):
     symptom_counter = []
     sintomas = used_symptoms.keys()
-
-    prognosticos = process_prognosticos_data(prognosticos, used_symptoms)
 
     for s in symptoms:
         if not s in sintomas:
@@ -37,12 +36,10 @@ def symptom_counter(prognosticos, symptoms, used_symptoms):
     return symptom_counter_ordered
 
 def doenca_counter(prognosticos, used_symptoms):
-    prognosticos = process_prognosticos_data(prognosticos, used_symptoms)
     doencas = prognosticos.prognostico.unique()
     return len(doencas)
 
 def resultados_prognosticos(prognosticos, used_symptoms):
-    prognosticos = process_prognosticos_data(prognosticos, used_symptoms)
     doencas = prognosticos.prognostico.unique()
 
     progs = []
@@ -58,23 +55,70 @@ def resultados_prognosticos(prognosticos, used_symptoms):
     
     return sorted(progs, key = lambda i: i['porcentagem'], reverse=True)
 
-#Iniciando o DataFrame
-df = pd.DataFrame(PrognosticoData.objects.values_list())
-field_names = PrognosticoData._meta.get_fields()
+def saveNewSintomaToDb(data):
+    sql_command = 'ALTER TABLE prognosticos_prognosticodata ADD COLUMN ' + \
+        data['nomecsv'] + ' INTEGER DEFAULT 0;'
+    
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute(sql_command)
+        return True
+    except:
+        return False
 
-index = {}
-index_n = 0
-for i in field_names:
-    index[index_n] = i.name
-    index_n += 1
+def saveNewResultadoToDb(data):
+    fields = ''
+    values = ''
 
-df.rename(columns=index, inplace=True)
-prognosticos = df.copy()
-prognosticos = prognosticos.drop('id', axis=1)
+    for sintoma in Sintoma.objects.all():
+        sintoma_csv = sintoma.nomecsv
+        fields += sintoma_csv + ', '
+        values += str(data[sintoma_csv]) + ', ' if sintoma_csv in data.keys() else '0' + ', '
+    
+    fields += 'prognostico'
+    values += '\'' + data['prognostico'] + '\''
 
-symptoms = df.iloc[:,:-1].columns.values.tolist()
-id_col = symptoms[0]
-symptoms.remove(id_col)
+    sql_command = 'INSERT INTO prognosticos_prognosticodata (' + fields + \
+        ') VALUES (' + values + ');'
+
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute(sql_command)
+        return True
+    except:
+        return False
+
+def init_dataframe(data):
+    with connection.cursor() as cursor:
+        sql_query = 'SELECT '
+        fields = ''
+        fields_list = []
+
+        for sintoma in Sintoma.objects.all():
+            fields += sintoma.nomecsv + ', '
+            fields_list.append(sintoma.nomecsv)
+        
+        fields += 'prognostico'
+        fields_list.append('prognostico')
+
+        sql_query += fields + ' FROM prognosticos_prognosticodata'
+        
+        if not hasValidData(data):
+            sql_query += ';'
+        else:
+            sql_query += ' WHERE '
+            
+            for key in data.keys():
+                if data[key] in ('0', '1'):
+                    sql_query += ' ' + key + ' = ' + str(data[key]) + ' AND'
+            sql_query = sql_query.rsplit(' ', 1)[0] + ';'
+
+        cursor.execute(sql_query)
+        df = pd.DataFrame(cursor.fetchall(), columns=fields_list)
+
+        symptoms = df.iloc[:,:-1].columns.values.tolist()
+
+    return df, symptoms
 
 # Create your views here.
 class StartConsulta(views.APIView):
@@ -88,6 +132,7 @@ class ShowSintomaView(views.APIView):
 
     def post(self, request):
         used_symptoms = request.data
+        prognosticos, symptoms = init_dataframe(used_symptoms)
         
         sintomas = symptom_counter(prognosticos, symptoms, used_symptoms)
         sintoma = sintomas[0]['symptom']
@@ -103,6 +148,7 @@ class AnswerSintomaView(views.APIView):
 
     def post(self, request):
         used_symptoms = request.data
+        prognosticos, symptoms = init_dataframe(used_symptoms)
         valido = True
 
         n_doencas = doenca_counter(prognosticos, used_symptoms)
@@ -118,6 +164,7 @@ class ReturnPrognosticosView(views.APIView):
 
     def post(self, request):
         used_symptoms = request.data
+        prognosticos, symptoms = init_dataframe(used_symptoms)
 
         data = resultados_prognosticos(prognosticos, used_symptoms)
         return Response(data, status=status.HTTP_201_CREATED)
@@ -127,18 +174,28 @@ class SavePrognosticoToDb(views.APIView):
 
     def post(self, request):
         data = request.data
-        print(data)
-        keys = data.keys()
-        
-        p = PrognosticoData()
-
-        for key in keys:
-            setattr(p, key, data[key])
-
-        if p.prognostico == '':
-            response = {'error': 'O campo "prognostico" não pode ser vazio'}
+        if data['prognostico'] == '':
+            response = {'error': 'O campo "prognostico" não pode ser vazio.'}
             return Response(response, status=status.HTTP_400_BAD_REQUEST)
+        
+        if saveNewResultadoToDb(data):
+            response = {'success': 'Resultado de consulta salvo com sucesso.'}
+            return Response(response, status=status.HTTP_201_CREATED)
         else:
-            p.save()
-        response = {'success': 'Resultado de consulta salvo com sucesso'}
-        return Response(response, status=status.HTTP_201_CREATED)
+            response = {'error': 'Ocorreu algo errado ao salvar o resultado.'}
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)
+
+class NewSintomaFieldToDb(views.APIView):
+    #permission_classes = (IsAuthenticated, )
+
+    def post(self, request):
+        data = request.data
+        data['nomecsv'] = unidecode(data['nome'].replace(' ', '_').lower())
+        
+        #Salvando o sintoma na tabela de sintomas
+        if saveNewSintomaToDb(data):
+            #response = {'success': 'Campo de sintoma salvo com sucesso.'}
+            return Response(data, status=status.HTTP_201_CREATED)
+
+        response = {'error': 'Ocorreu algo errado ao salvar o sintoma.'}
+        return Response(response, status=status.HTTP_400_BAD_REQUEST)

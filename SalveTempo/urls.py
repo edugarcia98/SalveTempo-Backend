@@ -97,6 +97,7 @@ urlpatterns = [
     path('startconsulta/', progviews.StartConsulta.as_view()),
     path('returnprognosticos/', progviews.ReturnPrognosticosView.as_view()),
     path('save-prognostico/', progviews.SavePrognosticoToDb.as_view()),
+    path('add-sintoma/', progviews.NewSintomaFieldToDb.as_view()),
 
     path('anamneses/', views.AnamneseList.as_view()),
 
