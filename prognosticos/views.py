@@ -5,6 +5,7 @@ from django.db import connection
 from .models import *
 from app.models import Sintoma, Doenca
 from .serializers import *
+from app.serializers import SintomaSerializer
 
 from rest_framework import mixins, generics, status, filters, views
 from rest_framework.views import APIView
@@ -192,10 +193,13 @@ class NewSintomaFieldToDb(views.APIView):
         data = request.data
         data['nomecsv'] = unidecode(data['nome'].replace(' ', '_').lower())
         
-        #Salvando o sintoma na tabela de sintomas
-        if saveNewSintomaToDb(data):
-            #response = {'success': 'Campo de sintoma salvo com sucesso.'}
-            return Response(data, status=status.HTTP_201_CREATED)
-
-        response = {'error': 'Ocorreu algo errado ao salvar o sintoma.'}
-        return Response(response, status=status.HTTP_400_BAD_REQUEST)
+        serializer = SintomaSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            #Salvando o sintoma na tabela de sintomas
+            if saveNewSintomaToDb(data):
+                #response = {'success': 'Campo de sintoma salvo com sucesso.'}
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            response = {'error': 'Ocorreu algo errado ao salvar o sintoma no banco de prognósticos.'}
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
