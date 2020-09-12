@@ -287,3 +287,21 @@ class RespostaSolicitacaoView(views.APIView):
         #print(medicoUnidadeSaude.medico.usuario.email)
 
         return Response(data)
+
+# View para retorno de especializações disponíveis
+# =========================================================================================================
+
+class EspecializacoesDisponiveisView(views.APIView):
+    permission_classes = (IsAuthenticated, )
+
+    def post(self, request):
+        data = request.data
+        especializacoes_dict = {'ids': []}
+
+        for key in data.keys():
+            doenca = Doenca.objects.get(id=int(key))
+            for espec in EspecializacaoDoenca.objects.filter(doenca=doenca):
+                if not espec.especializacao.id in especializacoes_dict['ids']:
+                    especializacoes_dict['ids'].append(espec.especializacao.id)
+        
+        return Response(especializacoes_dict, status.HTTP_200_OK)

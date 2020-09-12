@@ -73,6 +73,7 @@ urlpatterns = [
 
     path('especializacoes_doencas/', views.EspecializacaoDoencaList.as_view()),
     path('especializacoes_doencas/<int:pk>/', views.EspecializacaoDoencaDetail.as_view()),
+    path('valid_especializacoes_doencas/', views.EspecializacoesDisponiveisView.as_view()),
 
     path('users/', accountviews.UserList.as_view()),
     path('users/<int:pk>/', accountviews.UserDetail.as_view()),
