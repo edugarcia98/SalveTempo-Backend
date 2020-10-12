@@ -235,7 +235,7 @@ class ConsultaList(generics.ListCreateAPIView):
     serializer_class = ConsultaSerializer
 
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['medico__id', 'status']
+    filterset_fields = ['medico__id', 'paciente__id', 'status']
     
 class ConsultaDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthenticated, )

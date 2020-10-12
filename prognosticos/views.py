@@ -187,7 +187,7 @@ class SavePrognosticoToDb(views.APIView):
             return Response(response, status=status.HTTP_400_BAD_REQUEST)
 
 class NewSintomaFieldToDb(views.APIView):
-    #permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated, )
 
     def post(self, request):
         data = request.data
