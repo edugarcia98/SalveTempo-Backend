@@ -103,6 +103,11 @@ REST_FRAMEWORK = {
     ]
 }
 
+REST_AUTH_SERIALIZERS = {
+    'PASSWORD_RESET_SERIALIZER': 
+        'accountuser.serializers.PasswordResetSerializer',
+}
+
 TEMPLATES_ROOT = os.path.join(BASE_DIR, "templates")
 TEMPLATES = [
     {
@@ -181,7 +186,7 @@ STATIC_URL = '/static/'
 # Email backend settings for Django
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
+EMAIL_HOST_USER = 'salvetempo1@gmail.com'
+EMAIL_HOST_PASSWORD = 'zP2bxy%<*aT]tLqQ'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
